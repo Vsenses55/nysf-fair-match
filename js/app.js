@@ -105,16 +105,27 @@ function currentLevel() {
   return LEVELS[state.levelIndex];
 }
 
-// Theme-scoped, not array-position-scoped: winning level 1 of a theme
-// should lead to level 2's objectives of that SAME theme, and winning a
-// theme's last level should return to the Selection Screen — regardless
-// of what else exists later in the LEVELS array (e.g. another theme).
 function firstLevelOfTheme(theme) {
   return LEVELS.findIndex((l) => l.theme === theme && l.levelInTheme === 1);
 }
-function nextLevelIndexInTheme() {
-  const level = currentLevel();
-  return LEVELS.findIndex((l) => l.theme === level.theme && l.levelInTheme === level.levelInTheme + 1);
+
+// What "Continue" should do after a win: the Theme Objectives screen
+// explains a THEME, shown once when you're entering it — either by
+// picking it on the Selection Screen, or by finishing the previous
+// theme's last level and rolling into this one. It never appears
+// between two levels of the SAME theme; those just chain straight into
+// gameplay. So: next level, same theme -> start it directly; next level,
+// different theme (i.e. this was the theme's last level) -> show ITS
+// objectives; no next level at all -> back to the Selection Screen.
+function nextLevelAfter(level) {
+  const sameTheme = LEVELS.findIndex((l) => l.theme === level.theme && l.levelInTheme === level.levelInTheme + 1);
+  if (sameTheme !== -1) return { index: sameTheme, newTheme: false };
+  const here = LEVELS.indexOf(level);
+  const next = LEVELS[here + 1];
+  if (next && next.theme !== level.theme && next.levelInTheme === 1) {
+    return { index: here + 1, newTheme: true };
+  }
+  return { index: -1, newTheme: false };
 }
 
 /* ---------------- LEVEL LIFECYCLE ---------------- */
@@ -221,15 +232,15 @@ function endGame(win, reason) {
   }
   endScore.textContent = state.score;
 
-  const nextIndex = win ? nextLevelIndexInTheme() : -1;
-  const hasNext = nextIndex !== -1;
+  const next = win ? nextLevelAfter(level) : { index: -1, newTheme: false };
+  const hasNext = next.index !== -1;
   btnContinue.querySelector("span").textContent = win ? (hasNext ? "Continue" : "Back to Menu") : "Back to Menu";
   btnContinue.onclick = () => {
-    // A level win goes to the NEXT level's objectives screen, not straight
-    // into its gameplay — same pre-level step every level gets. Only the
-    // theme's last level returns to the Selection Screen.
-    if (hasNext) showObjectives(nextIndex);
-    else goToMenu();
+    if (!hasNext) return goToMenu();
+    // Same theme's next level chains straight into gameplay; a new theme
+    // shows its objectives first, same as picking it from Selection would.
+    if (next.newTheme) showObjectives(next.index);
+    else startLevel(next.index);
   };
 
   overlayEnd.classList.remove("hidden");
