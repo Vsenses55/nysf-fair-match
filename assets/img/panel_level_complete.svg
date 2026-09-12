@@ -1,0 +1,21 @@
+<svg width="478" height="663" viewBox="0 0 478 663" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_2077_9980)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M238.997 651.985C169.407 651.985 99.8028 648.493 39.3034 641.509C23.1333 639.647 11.2315 628.138 10.5032 611.842C1.63146 415.606 -2.7097 101.472 1.80627 35.2837C2.50552 25.1278 15.9223 12.513 25.9594 10.7961C67.9871 3.59385 153.485 0 238.997 0C324.509 0 410.006 3.59385 452.034 10.7961C462.071 12.513 475.488 25.1424 476.187 35.2837C480.718 101.472 476.362 415.606 467.505 611.857C466.762 628.138 454.86 639.647 438.69 641.524C378.191 648.508 308.601 652 238.997 652V651.985Z" fill="url(#paint0_radial_2077_9980)"/>
+<path d="M238.997 4C324.521 4.00001 409.706 7.6003 451.358 14.7383L451.359 14.7393C455.274 15.4089 460.429 18.4078 464.801 22.7266C469.216 27.0882 471.945 31.9133 472.196 35.5586C476.709 101.491 472.367 415.404 463.509 611.674C462.875 625.573 452.975 635.559 438.902 637.466L438.229 637.551C379.068 644.38 311.14 647.862 242.997 647.993V647.985H238.997C169.529 647.985 100.08 644.499 39.7617 637.536H39.7607C25.3353 635.875 15.1307 625.796 14.499 611.663V611.661C5.62653 415.407 1.29879 101.494 5.79688 35.5586C6.04837 31.9059 8.77774 27.0805 13.1914 22.7217C17.5619 18.4055 22.718 15.4091 26.6338 14.7393L26.6348 14.7383C68.2874 7.60029 153.473 4 238.997 4Z" stroke="#D1FFFC" stroke-width="8"/>
+</g>
+<defs>
+<filter id="filter0_d_2077_9980" x="0" y="0" width="478" height="663" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="11"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2077_9980"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2077_9980" result="shape"/>
+</filter>
+<radialGradient id="paint0_radial_2077_9980" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(239 326) rotate(90) scale(326 239)">
+<stop stop-color="#C3FFFC"/>
+<stop offset="1" stop-color="#6DF7FF"/>
+</radialGradient>
+</defs>
+</svg>

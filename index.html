@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NYS Fair Match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=Luckiest+Guy&family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=23" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- SELECTION SCREEN — Figma: Bkg Screens > Version=Selection (node
+       2111:60135) for the archway background. The 3 theme cards are
+       fully-baked images (border/thumbnail/label all in one PNG, exported
+       at 846x466 — see theme-food/farm/fun.png), not composited from
+       separate pieces; position/spacing below is derived from those PNGs'
+       native size against the reference fpo image, not a built Figma frame. -->
+  <div id="screen-start" class="screen-outer">
+    <div class="screen">
+      <div class="selection-frame">
+        <button class="theme-card" data-theme="food" style="background-image:url(assets/img/theme-food.png); top:90px;"></button>
+        <button class="theme-card" data-theme="farm" style="background-image:url(assets/img/theme-farm.png); top:324px;"></button>
+        <button class="theme-card" data-theme="fun" style="background-image:url(assets/img/theme-fun.png); top:558px;"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECTIVES SCREEN — brief pre-level explainer, shared layout for every
+       theme; only the "Theme Objectives" header graphic and text swap per
+       level (see showObjectives() in app.js). -->
+  <div id="screen-objectives" class="screen-outer hidden">
+    <div class="screen">
+      <div class="objectives-frame">
+        <div class="objectives-bg"></div>
+        <img class="objectives-spiral" src="assets/img/obj_spiral.svg" alt="" />
+        <img class="objectives-title-img" id="objectives-title-img" src="assets/img/obj_food_title.svg" alt="" />
+        <p class="objectives-level">OBJECTIVES</p>
+        <p class="objectives-blurb" id="objectives-blurb">
+          Score 1,400 points before the timer runs out! Match 3 or more matching treats — the bigger the combo, the bigger the bonus. Ice cream is worth double, so scoop it up! You've got 22 moves and 90 seconds to hit the goal.
+        </p>
+
+        <p class="objectives-row-label" id="objectives-bonus-label" style="top: 490px;">BONUS ITEM</p>
+        <div class="figma-panel obj-moves-panel" id="objectives-bonus-panel">
+          <div class="figma-layer" style="inset:0;background-image:url(../assets/img/match_indicator.svg)"></div>
+          <img class="moves-icon-img" id="objectives-bonus-icon" src="assets/img/moves_icon.svg" alt="" />
+          <span class="moves-value" id="objectives-bonus-multiplier">2X</span>
+        </div>
+
+        <p class="objectives-row-label" style="top: 641px;">SCORE GOAL</p>
+        <div class="figma-panel obj-target-panel">
+          <div class="figma-layer" style="top:8.05%;bottom:0;background-image:url(../assets/img/target_shadow.svg)"></div>
+          <div class="figma-layer" style="top:0;bottom:8.05%;background-image:url(../assets/img/target_body.svg)"></div>
+          <div class="figma-layer" style="top:22.75%;right:9.14%;bottom:30.79%;left:8.62%;background-image:url(../assets/img/target_track.svg)"></div>
+          <span class="objectives-target-value" id="objectives-target">1,400</span>
+        </div>
+
+        <button class="btn btn-figma btn-figma-orange btn-objectives" id="btn-start-playing">START PLAYING</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="screen-game" class="screen-outer hidden">
+    <div class="screen">
+      <div class="game-frame">
+
+        <img class="fair-logo-img" src="assets/img/logo.svg" alt="THE FAIR" />
+
+        <div class="figma-panel score-panel">
+          <div class="figma-layer" style="top:6.37%;bottom:3.7%;background-image:url(../assets/img/score_shadow.svg)"></div>
+          <div class="figma-layer" style="top:1.3%;bottom:8.77%;background-image:url(../assets/img/score_body.svg)"></div>
+          <div class="score-header"><span class="score-header-label">TOTAL SCORE</span></div>
+          <span class="score-value" id="ui-score">0</span>
+        </div>
+
+        <div class="figma-panel moves-panel">
+          <div class="figma-layer" style="inset:0;background-image:url(../assets/img/match_indicator.svg)"></div>
+          <img class="moves-icon-img" id="ui-moves-icon" src="assets/img/moves_icon.svg" alt="" />
+          <span class="moves-value" id="ui-moves">20</span>
+        </div>
+
+        <div class="figma-panel time-panel">
+          <div class="figma-layer" style="inset:0;background-image:url(../assets/img/time_indicator.svg)"></div>
+          <span class="time-value" id="ui-timer">01:30</span>
+        </div>
+
+        <div class="figma-panel target-panel">
+          <div class="figma-layer" style="top:8.05%;bottom:0;background-image:url(../assets/img/target_shadow.svg)"></div>
+          <div class="figma-layer" style="top:0;bottom:8.05%;background-image:url(../assets/img/target_body.svg)"></div>
+          <div class="figma-layer" style="top:22.75%;right:9.14%;bottom:30.79%;left:8.62%;background-image:url(../assets/img/target_track.svg)"></div>
+          <div class="target-icon" id="ui-target-icon"></div>
+          <div class="target-bar-track">
+            <div class="target-bar-fill" id="ui-target-fill"></div>
+            <span class="target-count" id="ui-target-count">0 / 500</span>
+          </div>
+        </div>
+
+        <!-- BOARD AREA -->
+        <div class="board-wrap">
+          <div id="board" class="board"></div>
+          <div id="combo-popup" class="combo-popup"></div>
+        </div>
+
+        <!-- END OVERLAY — Figma: Food Game Screen > Overlay > Panel: Level Complete (node 2077:10043) -->
+        <div id="overlay-end" class="overlay hidden">
+          <div class="end-card">
+            <!-- No SVG <filter> here on purpose: SVG filter primitives force
+                 the browser to rasterize whatever they're attached to, which
+                 reintroduces the scale-softening bug even for inline markup.
+                 The drop shadow is applied as CSS `filter: drop-shadow()`
+                 instead (see .end-card-bg in styles.css), which doesn't. -->
+            <svg class="end-card-bg" width="478" height="652" viewBox="0 0 478 652" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M238.997 651.985C169.407 651.985 99.8028 648.493 39.3034 641.509C23.1333 639.647 11.2315 628.138 10.5032 611.842C1.63146 415.606 -2.7097 101.472 1.80627 35.2837C2.50552 25.1278 15.9223 12.513 25.9594 10.7961C67.9871 3.59385 153.485 0 238.997 0C324.509 0 410.006 3.59385 452.034 10.7961C462.071 12.513 475.488 25.1424 476.187 35.2837C480.718 101.472 476.362 415.606 467.505 611.857C466.762 628.138 454.86 639.647 438.69 641.524C378.191 648.508 308.601 652 238.997 652V651.985Z" fill="url(#end-card-gradient)"/>
+              <path d="M238.997 4C324.521 4.00001 409.706 7.6003 451.358 14.7383L451.359 14.7393C455.274 15.4089 460.429 18.4078 464.801 22.7266C469.216 27.0882 471.945 31.9133 472.196 35.5586C476.709 101.491 472.367 415.404 463.509 611.674C462.875 625.573 452.975 635.559 438.902 637.466L438.229 637.551C379.068 644.38 311.14 647.862 242.997 647.993V647.985H238.997C169.529 647.985 100.08 644.499 39.7617 637.536H39.7607C25.3353 635.875 15.1307 625.796 14.499 611.663V611.661C5.62653 415.407 1.29879 101.494 5.79688 35.5586C6.04837 31.9059 8.77774 27.0805 13.1914 22.7217C17.5619 18.4055 22.718 15.4091 26.6338 14.7393L26.6348 14.7383C68.2874 7.60029 153.473 4 238.997 4Z" stroke="#D1FFFC" stroke-width="8"/>
+              <defs>
+                <radialGradient id="end-card-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(239 326) rotate(90) scale(326 239)">
+                  <stop stop-color="#C3FFFC"/>
+                  <stop offset="1" stop-color="#6DF7FF"/>
+                </radialGradient>
+              </defs>
+            </svg>
+            <h2 id="end-title">LEVEL COMPLETE!</h2>
+            <p id="end-sub"></p>
+            <p class="end-score-label">FINAL SCORE</p>
+            <p class="end-score-value" id="end-score">0</p>
+            <button class="btn-figma-lg btn-figma-lg-blue" id="btn-continue">
+              <svg class="btn-figma-lg-stroke" viewBox="0 0 320.003 87.8828" xmlns="http://www.w3.org/2000/svg">
+                <path d="M37.7715 3.88867C119.105 0.0355637 200.534 0.0356416 282.057 3.88867V3.88965C303.912 4.99584 320.292 23.1525 318.923 44.0088L318.921 44.0459C318.906 44.5592 318.849 45.0703 318.751 45.5742L318.744 45.6143L318.739 45.6533C317.676 55.0679 313.178 63.7608 306.107 70.0674C299.037 76.3737 289.889 79.852 280.415 79.8369H278.554C199.608 76.0758 120.568 76.0761 41.4346 79.8379H41.4336C31.65 80.3088 22.054 77.0378 14.5957 70.6885C7.13735 64.339 2.37575 55.3878 1.2793 45.6543L1.27637 45.6279L1.27246 45.6016L1.22461 45.2393C1.21155 45.1136 1.20049 44.9811 1.18848 44.8369C1.16719 44.5814 1.14091 44.2856 1.09375 43.9814C1.01889 43.1745 0.988924 42.364 1.00391 41.5537V41.5352C1.00391 21.6835 16.9373 4.89857 37.7725 3.88965L37.7715 3.88867Z" fill="none" stroke="#0118e7" stroke-width="2"/>
+              </svg>
+              <span>CONTINUE</span>
+            </button>
+            <button class="btn-figma-lg btn-figma-lg-orange" id="btn-retry">
+              <svg class="btn-figma-lg-stroke" viewBox="0 0 320.003 87.8828" xmlns="http://www.w3.org/2000/svg">
+                <path d="M37.7715 3.88867C119.105 0.0355637 200.534 0.0356416 282.057 3.88867V3.88965C303.912 4.99584 320.292 23.1525 318.923 44.0088L318.921 44.0459C318.906 44.5592 318.849 45.0703 318.751 45.5742L318.744 45.6143L318.739 45.6533C317.676 55.0679 313.178 63.7608 306.107 70.0674C299.037 76.3737 289.889 79.852 280.415 79.8369H278.554C199.608 76.0758 120.568 76.0761 41.4346 79.8379H41.4336C31.65 80.3088 22.054 77.0378 14.5957 70.6885C7.13735 64.339 2.37575 55.3878 1.2793 45.6543L1.27637 45.6279L1.27246 45.6016L1.22461 45.2393C1.21155 45.1136 1.20049 44.9811 1.18848 44.8369C1.16719 44.5814 1.14091 44.2856 1.09375 43.9814C1.01889 43.1745 0.988924 42.364 1.00391 41.5537V41.5352C1.00391 21.6835 16.9373 4.89857 37.7725 3.88965L37.7715 3.88867Z" fill="none" stroke="#f62837" stroke-width="2"/>
+              </svg>
+              <span>TRY AGAIN</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/assets.js?v=13"></script>
+<script src="js/engine.js?v=2"></script>
+<script src="js/audio.js?v=2"></script>
+<script src="js/app.js?v=11"></script>
+</body>
+</html>

@@ -1,0 +1,709 @@
+:root {
+  --design-w: 1366px;
+  --design-h: 1024px;
+  --ink: #2c1c10;
+  --gold: #ffd23f;
+  --gold-dark: #e8a412;
+  --fair-blue: #1c5fd6;
+  --fair-blue-dark: #0d3d91;
+  --fair-blue-light: #5aa8ff;
+  --fair-green: #3fae5e;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #1b1230;
+  color: var(--ink);
+  font-family: 'Rowdies', sans-serif;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hidden { display: none !important; }
+
+/* The whole game canvas is authored at the Figma design's native 1366x1024
+   resolution so every child element below can use the exact px/percent
+   values from the design. Responsive fit is done in JS (app.js: fitScreen)
+   by resizing .screen-outer to the real on-screen size and applying a
+   matching transform:scale to the fixed-size .screen inside it — a plain
+   CSS transform doesn't change layout size, so scaling .screen directly
+   would leave the browser thinking the page is still 1366px wide and
+   fighting mobile viewport zoom. */
+.screen-outer {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.screen {
+  width: var(--design-w);
+  height: var(--design-h);
+  transform-origin: top left;
+  position: relative;
+  background-image: url("../assets/img/bkg_fairground.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------------- START SCREEN ---------------- */
+.start-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(13, 61, 145, 0.72);
+  border: 6px solid var(--gold);
+  border-radius: 28px;
+  padding: 56px 72px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.logo-img {
+  width: 260px;
+  margin: 0 0 12px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+}
+
+.tagline {
+  color: #d9c9ff;
+  font-size: 15px;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+
+.btn {
+  font-family: 'Rowdies', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 14px;
+  padding: 14px 36px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  letter-spacing: 1px;
+}
+.btn:active { transform: scale(0.96); }
+
+.btn-figma {
+  position: relative;
+  z-index: 0;
+  width: 220px;
+  height: 59px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  color: #f5ece6;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+.btn-figma::before, .btn-figma::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+.btn-figma::before {
+  top: -1%; bottom: -7%;
+  z-index: -2;
+}
+.btn-figma::after {
+  top: 1%; bottom: 43%;
+  z-index: -1;
+}
+.btn-figma-orange::before { background-image: url("../assets/img/btn_orange_shape.svg"); }
+.btn-figma-orange::after { background-image: url("../assets/img/btn_blue_shine.svg"); }
+
+.btn-ghost {
+  background: transparent;
+  color: #e9dcff;
+  border: 2px solid #6b4fa0;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.08); }
+.btn-ghost.small { font-size: 12px; padding: 8px 16px; width: 100%; }
+
+.level-picker {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------------- OBJECTIVES SCREEN ----------------
+   "Bkg Food Objectives" (Figma node 2047:1000, symbol 2047:999) — a brief
+   pre-level explainer. Positions below are the exact left/top values from
+   that symbol's own children, all centered via left:50% + translateX(-50%)
+   since the symbol's content is itself centered on its 1366px width. Only
+   the button is functional; everything else is a static preview of this
+   level's real numbers (see LEVELS[0] in assets.js), not live game state. */
+.objectives-frame {
+  width: var(--design-w);
+  height: var(--design-h);
+  position: relative;
+  overflow: hidden;
+}
+.objectives-bg {
+  position: absolute;
+  inset: 0;
+  background: #5506b7;
+}
+.objectives-spiral {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.objectives-food-title {
+  position: absolute;
+  left: 50%;
+  top: 103px;
+  transform: translateX(-50%);
+  width: 615.16px;
+  height: 194.7px;
+}
+.objectives-level {
+  position: absolute;
+  left: 50%;
+  top: 305px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 42px;
+  color: #ffff7e;
+  white-space: nowrap;
+}
+.objectives-blurb {
+  position: absolute;
+  left: 50%;
+  top: 377px;
+  transform: translateX(-50%);
+  margin: 0;
+  width: 840px;
+  font-family: 'Rowdies', sans-serif;
+  font-size: 22px;
+  line-height: 1.3;
+  color: #fff;
+  text-align: center;
+}
+.objectives-row-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'Rowdies', sans-serif;
+  font-size: 26px;
+  color: #fff;
+  white-space: nowrap;
+}
+.obj-moves-panel {
+  left: 50%;
+  top: 527px;
+  transform: translateX(-50%);
+  width: 169.38px;
+  height: 78.91px;
+}
+.obj-target-panel {
+  left: 50%;
+  top: 682px;
+  transform: translateX(-50%);
+  width: 197.41px;
+  height: 65.86px;
+}
+.objectives-target-value {
+  position: absolute;
+  z-index: 1;
+  top: 22.75%;
+  right: 9.14%;
+  bottom: 30.79%;
+  left: 8.62%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 20px;
+  color: #fff;
+}
+.btn-objectives {
+  left: 50%;
+  top: 815px;
+  transform: translateX(-50%);
+  position: absolute;
+  width: 431.628px;
+  height: 116px;
+  font-size: 26px;
+}
+/* .btn:active sets transform:scale(0.96) for press feedback, which — since
+   CSS transform isn't additive across rules — would otherwise wipe out the
+   translateX(-50%) centering above and snap the button to the right. */
+.btn-objectives:active {
+  transform: translateX(-50%) scale(0.96);
+}
+
+/* ---------------- GAME SCREEN ----------------
+   Every element below is placed with the exact left/top/width/height pulled
+   from the Figma file's "Design" frame (1366x1024): UI frame at (0,51) and
+   Board frame at (473,62). See MEMORY/PR notes for the node ids. */
+.game-frame {
+  width: var(--design-w);
+  height: var(--design-h);
+  position: relative;
+  background-image: url("../assets/img/bkg_fairground.jpg");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* Generic wrapper for a Figma-exported chrome graphic built from stacked layers */
+.figma-panel {
+  position: absolute;
+}
+.figma-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.fair-logo-img {
+  position: absolute;
+  left: 150px;
+  top: 51px;
+  width: 159.44px;
+  height: 156.91px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* ---- Total score panel: UI frame (0,51) + Total Score (110,190) ---- */
+.score-panel {
+  left: 110px;
+  top: 241px;
+  width: 238.34px;
+  height: 96.81px;
+}
+.score-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  bottom: 66.26%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../assets/img/score_header.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.score-header-label {
+  font-family: 'Holtwood One SC', serif;
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transform: translateY(-4px);
+}
+.score-value {
+  position: absolute;
+  left: 0; right: 0;
+  top: 39.33%;
+  bottom: 30.71%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 38px;
+  color: #153ee8;
+}
+
+/* ---- Match indicator (moves): Frame 1 (47,369) + Match Indicator (0,0) ---- */
+.moves-panel {
+  left: 47px;
+  top: 420px;
+  width: 169.38px;
+  height: 78.91px;
+}
+.moves-icon-img {
+  position: absolute;
+  left: 30.69px;
+  top: 11.5px;
+  width: 46px;
+  height: 50px;
+  object-fit: contain;
+  z-index: 1;
+}
+.moves-value {
+  /* Centered against the cream/white region of match_indicator.svg (right
+     of the green highlight), not the whole pill including its shadow-peek. */
+  position: absolute;
+  left: 58.6%;
+  right: 2%;
+  top: 0;
+  bottom: 8.24%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 31px;
+  color: #153ee8;
+}
+
+/* ---- Time: Frame 1 (47,369) + Time (185.38,0) ---- */
+.time-panel {
+  left: 232.38px;
+  top: 420px;
+  width: 179.48px;
+  height: 79.14px;
+}
+.time-value {
+  /* Centered against the blue clock face of time_indicator.svg, not the
+     whole pill including its shadow-peek margins. */
+  position: absolute;
+  left: 5.4%;
+  right: 4.6%;
+  top: 9.5%;
+  bottom: 18.55%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 32px;
+  color: #fff;
+}
+
+/* ---- Target Score: UI frame (0,51) + Target Score (131,472) ---- */
+.target-panel {
+  left: 131px;
+  top: 523px;
+  width: 197.41px;
+  height: 65.86px;
+}
+.target-icon {
+  display: none;
+}
+.target-bar-track {
+  position: absolute;
+  z-index: 1;
+  top: 22.75%;
+  right: 9.14%;
+  bottom: 30.79%;
+  left: 8.62%;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.target-bar-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd23f, #ff8f3f);
+  transition: width 0.35s ease;
+}
+.target-count {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ---------------- BOARD AREA ----------------
+   board_shape.svg has an 8px centered stroke, so its own fill+stroke canvas
+   (833.01x832.981) is larger than the "Board Shape" layer's nominal bbox
+   (817.01x816.98) by exactly the stroke bleed — confirmed by the original
+   Figma export coding that image at `inset: -0.98%` (0.98% * 817 ≈ 8px)
+   relative to its layout box. Rendering the asset at its own native size,
+   centered in the Board frame (473,62,835,831), reproduces that exactly
+   instead of squeezing the stroke by stretching it into the smaller box. */
+.board-wrap {
+  position: absolute;
+  left: 474px;
+  top: 61px;
+  width: 833.01px;
+  height: 832.981px;
+}
+
+.board {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 85.54px);
+  grid-template-rows: repeat(9, 85.46px);
+  gap: 5px;
+  /* Keeps the grid content (809.86x809.14) aligned to the Items frame's
+     absolute position (483, 73.72) now that board-wrap moved to (474, 61). */
+  padding: 12.72px 14.15px 11.12px 9px;
+  background-image: url("../assets/img/board_shape.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.cell {
+  position: relative;
+}
+
+/* The tile's own art (pizza.svg, corn.svg, hotdog.png, etc.) is already a
+   complete rounded-card + icon graphic sized to the exact cell — it is the
+   only container. Don't add a second background/shadow/inset around it. */
+.tile {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: transform 0.12s ease, top 0.28s ease, left 0.28s ease, opacity 0.22s ease;
+  user-select: none;
+}
+
+.tile svg, .tile img { width: 100%; height: 100%; pointer-events: none; }
+
+/* star.svg's visible card is a sub-region of a larger padded canvas (room
+   for the drop shadow) — crop to just that region instead of showing the
+   whole padded canvas, which is what made it look smaller than other tiles.
+   Card rect measured from the SVG path: x:[6.45,91.99] y:[10.66,96.12] in a
+   102x104 canvas. Selector specificity intentionally beats ".tile img" above. */
+.tile .tile-star-crop {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.tile .tile-star-crop img {
+  position: absolute;
+  left: -7.54%;
+  top: -12.47%;
+  width: 119.24%;
+  height: 121.70%;
+}
+
+/* Transient press/hold feedback — tied directly to the pointer being down
+   on the tile (see onTilePointerDown/Up in app.js), not to game state. No
+   border/outline, just a quick scale that reverts on release or drag. */
+.tile.pressed {
+  transform: scale(1.08);
+  z-index: 5;
+}
+
+.tile.matched {
+  animation: pop-out 0.28s ease forwards;
+  z-index: 3;
+}
+
+.tile.falling-in {
+  animation: drop-in 0.32s ease;
+}
+
+.tile.invalid-shake {
+  animation: shake 0.32s ease;
+}
+
+@keyframes pop-out {
+  0% { transform: scale(1); opacity: 1; }
+  60% { transform: scale(1.25); opacity: 0.8; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes drop-in {
+  0% { transform: translateY(-18px); opacity: 0.4; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ---------------- COMBO POPUP ---------------- */
+.combo-popup {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 46px;
+  color: var(--gold);
+  text-shadow: 3px 3px 0 #7a1f2b, 0 0 30px rgba(255,210,63,0.7);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 20;
+}
+
+.combo-popup.show {
+  animation: combo-pop 1.1s ease forwards;
+}
+
+@keyframes combo-pop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(-4deg); }
+  20% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(2deg); }
+  35% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -60%) scale(1.05); }
+}
+
+/* ---------------- END OVERLAY — Figma: Food Game Screen > Overlay >
+   Panel: Level Complete (node 2077:10043, 478x652 at 444,186). Lives inside
+   .game-frame so it scales with the same transform as the rest of the HUD. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 5, 20, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* The card background is an INLINE <svg> (literal markup in index.html),
+   not an <img src="...svg"> or CSS background-image. That distinction
+   matters: an external image resource gets rasterized to a bitmap once,
+   and this app's responsive transform:scale() then scales that bitmap —
+   softening curves at non-1 scale factors (yesterday's bug). Inline SVG
+   is live DOM content the browser repaints as vector geometry every time,
+   so it can't suffer that — EXCEPT if an SVG <filter> is attached (they
+   force rasterization of their input by spec, inline or not, which is
+   exactly what reintroduced the softness a moment ago). So the shape+
+   stroke paths here carry no SVG filter at all; the drop shadow below is
+   CSS `filter: drop-shadow()`, which doesn't have that problem. */
+.end-card {
+  position: relative;
+  width: 478px;
+  height: 652px;
+}
+.end-card-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 478px;
+  height: 652px;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 11px 0 #ffffff)
+    drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+}
+
+#end-title {
+  position: absolute;
+  left: 50%;
+  top: 79.45px;
+  width: 300px;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Holtwood One SC', serif;
+  color: #2168ff;
+  font-size: 42px;
+  line-height: 37px;
+  text-align: center;
+}
+
+#end-sub {
+  display: none;
+}
+
+.end-score-label {
+  position: absolute;
+  left: 50%;
+  top: 213.45px;
+  width: 317px;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Rowdies', sans-serif;
+  color: #4f6d9d;
+  font-size: 26px;
+  text-align: center;
+}
+
+.end-score-value {
+  position: absolute;
+  left: 50%;
+  top: 249.45px;
+  width: 317px;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Rowdies', sans-serif;
+  color: #2168ff;
+  font-size: 96px;
+  line-height: 1;
+  letter-spacing: -2.88px;
+  text-align: center;
+}
+
+/* Pure-CSS pill buttons — no image asset, same reasoning as .end-card
+   above: a gradient + border-radius repaints crisply at any transform
+   scale, where a rasterized shape+shine image asset can soften/stairstep. */
+.btn-figma-lg {
+  position: absolute;
+  left: 50%;
+  width: 320px;
+  height: 86px;
+  transform: translateX(-50%);
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f5ece6;
+  font-family: 'Holtwood One SC', serif;
+  font-size: 19px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+.btn-figma-lg:active {
+  transform: translateX(-50%) scale(0.97);
+}
+/* Stroke + shadow colors/offset pulled from the real exported button SVGs
+   (btn_blue_shape_lg.svg / btn_orange_shape_lg.svg): each has its own
+   separately-drawn stroke path (not just `stroke` on the fill) and an SVG
+   filter whose feColorMatrix recolors the drop shadow — in both buttons
+   that shadow color exactly matches the stroke color, dy=7, fully opaque
+   (same "127 in feColorMatrix is just an intermediate mask" pattern as
+   the panel). No clip-path on these yet (shape is still a plain pill,
+   deferred), so a plain box-shadow inset ring is safe here — that's only
+   unreliable in combination with clip-path, per the panel investigation.
+   The outer shadow is CSS filter:drop-shadow, not box-shadow, on general
+   principle (box-shadow can't do a hard 100%-opacity offset-only shadow
+   as accurately, and this keeps both buttons consistent with the panel). */
+.btn-figma-lg-blue {
+  background: linear-gradient(180deg, #1d39e6 0%, #1d39e6 48%, #0828e6 49%, #0828e6 100%);
+  box-shadow: inset 0 0 0 2px #0118e7;
+  filter: drop-shadow(0 7px 0 #0118e7);
+}
+.btn-figma-lg-orange {
+  background: linear-gradient(180deg, #ee5922 0%, #ee5922 48%, #f63319 49%, #f63319 100%);
+  box-shadow: inset 0 0 0 2px #f62837;
+  filter: drop-shadow(0 7px 0 #f62837);
+}
+
+#btn-continue { top: 383.45px; }
+#btn-retry { top: 486.45px; }
