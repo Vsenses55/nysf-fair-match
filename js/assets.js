@@ -234,13 +234,13 @@ const LEVELS = [
     comboText: ["FARM-TASTIC!", "MOO-VELOUS!", "BARNYARD BLAST!", "HAY-MAZING!", "RIBBON WINNER!"],
   },
   {
-    // Placeholder name/stats, same as Midway Mania below — Barnyard Bash
-    // was the only Farm level authored so far. Every theme needs exactly
-    // 2 levels for the win -> next-level-objectives flow to have anywhere
-    // to go, so this exists to complete that pair; swap in real values
-    // whenever they're decided.
+    // Placeholder stats — Barnyard Bash was the only Farm level authored
+    // so far. Every theme needs exactly 2 levels for the win -> next-level-
+    // objectives flow to have anywhere to go, so this exists to complete
+    // that pair; swap in real values whenever they're decided. Name is
+    // just the theme name (no invented sub-title) until one is provided.
     id: 3,
-    name: "Barn Blitz",
+    name: "Farm",
     theme: "farm",
     levelInTheme: 2,
     tileTypes: ["cow", "pig", "chicken", "goat", "llama"],
@@ -256,11 +256,12 @@ const LEVELS = [
     focusComboText: ["LLAMA-RAMA!", "DRAMA LLAMA!", "SO FLUFFY!"],
   },
   {
-    // Placeholder name/stats — no canonical copy exists for this theme yet
+    // Placeholder stats — no canonical copy exists for this theme yet
     // (unlike Barnyard Bash, which already had these authored). Swap in
-    // real values whenever they're decided; nothing else depends on them.
+    // real values whenever they're decided. Name is just the theme name
+    // (no invented sub-title) until one is provided.
     id: 4,
-    name: "Midway Mania",
+    name: "Fun",
     theme: "fun",
     levelInTheme: 1,
     // "coaster" has no real icon yet (its Figma export needs a manual
