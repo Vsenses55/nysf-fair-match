@@ -11,10 +11,15 @@
    size and transform the fixed-size .screen inside it to match. */
 const DESIGN_W = 1366;
 const DESIGN_H = 1024;
+// Small top/bottom breathing room on regular screens so the frame isn't
+// edge-to-edge. Only bites when height is the binding dimension and scale
+// is still below 1 — on larger screens scale is already clamped to 1 (full
+// native size) below, so this margin has no effect there.
+const MARGIN_Y = 24;
 
 function fitScreen() {
   // 1366x1024 is the max size — never scale past native resolution, only down.
-  const scale = Math.min(window.innerWidth / DESIGN_W, window.innerHeight / DESIGN_H, 1);
+  const scale = Math.min(window.innerWidth / DESIGN_W, (window.innerHeight - MARGIN_Y * 2) / DESIGN_H, 1);
   document.querySelectorAll(".screen-outer").forEach((outer) => {
     outer.style.width = `${DESIGN_W * scale}px`;
     outer.style.height = `${DESIGN_H * scale}px`;
