@@ -15,7 +15,7 @@ const DESIGN_H = 1024;
 // edge-to-edge. Only bites when height is the binding dimension and scale
 // is still below 1 — on larger screens scale is already clamped to 1 (full
 // native size) below, so this margin has no effect there.
-const MARGIN_Y = 24;
+const MARGIN_Y = 48;
 
 function fitScreen() {
   // 1366x1024 is the max size — never scale past native resolution, only down.
