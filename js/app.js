@@ -86,9 +86,10 @@ const endScore = document.getElementById("end-score");
 // The Match Indicator's icon is a flat Figma "Matches Icon" export with no
 // background container, unlike REAL_IMG board-tile art (which bakes in the
 // colored rounded-square badge). One flat export exists per theme so far:
-// Matches=Food (ice cream) and Matches=Farm (pig). Any focusTile without a
-// flat export here falls back to its REAL_IMG board art (badge and all).
-const FOCUS_ICON_OVERRIDES = { icecream: "moves_icon.svg", pig: "moves_icon_farm.svg" };
+// Matches=Food (ice cream), Matches=Farm (pig), Matches=Fun (horse). Any
+// focusTile without a flat export here falls back to its REAL_IMG board
+// art (badge and all).
+const FOCUS_ICON_OVERRIDES = { icecream: "moves_icon.svg", pig: "moves_icon_farm.svg", horse: "moves_icon_fun.svg" };
 function focusIconSrc(focusTile) {
   const file = FOCUS_ICON_OVERRIDES[focusTile] || REAL_IMG[focusTile];
   return file ? `${ASSET_BASE}${file}` : `${ASSET_BASE}moves_icon.svg`;
@@ -97,9 +98,10 @@ function focusIconSrc(focusTile) {
 // The Match Indicator's pill art bakes in a colored highlight behind the
 // icon (green, #20B163, in the default export). Themes with a flat icon
 // override above get a recolored copy of that highlight instead — Farm's
-// is #7C36CC (match_indicator_farm.svg) — so the highlight reads as that
-// theme's color rather than always green.
-const FOCUS_INDICATOR_BG = { pig: "match_indicator_farm.svg" };
+// is #7C36CC (match_indicator_farm.svg), Fun's is #F3372A
+// (match_indicator_fun.svg) — so the highlight reads as that theme's color
+// rather than always green.
+const FOCUS_INDICATOR_BG = { pig: "match_indicator_farm.svg", horse: "match_indicator_fun.svg" };
 function focusIndicatorBg(focusTile) {
   return `${ASSET_BASE}${FOCUS_INDICATOR_BG[focusTile] || "match_indicator.svg"}`;
 }

@@ -271,13 +271,14 @@ const LEVELS = [
     // art until then.
     tileTypes: ["bear", "fair", "balloons", "horse", "coaster"],
     specialTile: "star",
-    focusTile: null,
-    focusWeight: 0,
-    focusMultiplier: 1,
+    focusTile: "horse",
+    focusWeight: 2,
+    focusMultiplier: 2,
     targetScore: 700,
     moves: 22,
     timeSeconds: 90,
     bgClass: "bg-fun",
     comboText: ["FUN-TASTIC!", "CARNIVAL COMBO!", "MIDWAY MAGIC!", "RIDE THE WIN!", "JACKPOT!"],
+    focusComboText: ["CAROUSEL CRAZE!", "GALLOP ON!", "MERRY-GO-WIN!"],
   },
 ];
