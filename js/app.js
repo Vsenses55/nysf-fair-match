@@ -59,6 +59,7 @@ const objBlurb = document.getElementById("objectives-blurb");
 const objTarget = document.getElementById("objectives-target");
 const objBonusLabel = document.getElementById("objectives-bonus-label");
 const objBonusPanel = document.getElementById("objectives-bonus-panel");
+const objBonusBg = document.getElementById("objectives-bonus-bg");
 const objBonusIcon = document.getElementById("objectives-bonus-icon");
 const objBonusMultiplier = document.getElementById("objectives-bonus-multiplier");
 
@@ -72,6 +73,7 @@ const THEME_TITLE_IMG = { food: "obj_food_title.svg", farm: "obj_farm_title.svg"
 const uiScore = document.getElementById("ui-score");
 const uiMoves = document.getElementById("ui-moves");
 const uiMovesIcon = document.getElementById("ui-moves-icon");
+const uiMovesBg = document.getElementById("ui-moves-bg");
 const uiTimer = document.getElementById("ui-timer");
 const uiTargetIcon = document.getElementById("ui-target-icon");
 const uiTargetFill = document.getElementById("ui-target-fill");
@@ -90,6 +92,16 @@ const FOCUS_ICON_OVERRIDES = { icecream: "moves_icon.svg", pig: "moves_icon_farm
 function focusIconSrc(focusTile) {
   const file = FOCUS_ICON_OVERRIDES[focusTile] || REAL_IMG[focusTile];
   return file ? `${ASSET_BASE}${file}` : `${ASSET_BASE}moves_icon.svg`;
+}
+
+// The Match Indicator's pill art bakes in a colored highlight behind the
+// icon (green, #20B163, in the default export). Themes with a flat icon
+// override above get a recolored copy of that highlight instead — Farm's
+// is #7C36CC (match_indicator_farm.svg) — so the highlight reads as that
+// theme's color rather than always green.
+const FOCUS_INDICATOR_BG = { pig: "match_indicator_farm.svg" };
+function focusIndicatorBg(focusTile) {
+  return `${ASSET_BASE}${FOCUS_INDICATOR_BG[focusTile] || "match_indicator.svg"}`;
 }
 
 const state = {
@@ -156,6 +168,7 @@ function showObjectives(index) {
   objBonusPanel.classList.toggle("hidden", !hasFocus);
   if (hasFocus) {
     objBonusIcon.src = focusIconSrc(level.focusTile);
+    objBonusBg.style.backgroundImage = `url(${focusIndicatorBg(level.focusTile)})`;
     objBonusMultiplier.textContent = `${level.focusMultiplier}X`;
   }
 
@@ -184,6 +197,7 @@ function startLevel(index) {
   document.title = `NYS Fair Match — ${level.name}`;
   uiTargetIcon.innerHTML = tileMarkup(level.specialTile);
   uiMovesIcon.src = focusIconSrc(level.focusTile);
+  uiMovesBg.style.backgroundImage = `url(${focusIndicatorBg(level.focusTile)})`;
   gameFrameEl.classList.remove("theme-farm", "theme-fun");
   if (level.theme !== "food") gameFrameEl.classList.add(`theme-${level.theme}`);
 
