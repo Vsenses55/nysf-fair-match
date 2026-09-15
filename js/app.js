@@ -81,11 +81,12 @@ const endTitle = document.getElementById("end-title");
 const endSub = document.getElementById("end-sub");
 const endScore = document.getElementById("end-score");
 
-// The Match Indicator's icon (moves_icon.svg) is the one Figma-exported
-// "Matches Icon" illustration we have, drawn for ice cream. If a future
-// level's focusTile isn't ice cream, fall back to that tile's flat board
-// art (REAL_IMG) rather than showing the wrong icon.
-const FOCUS_ICON_OVERRIDES = { icecream: "moves_icon.svg" };
+// The Match Indicator's icon is a flat Figma "Matches Icon" export with no
+// background container, unlike REAL_IMG board-tile art (which bakes in the
+// colored rounded-square badge). One flat export exists per theme so far:
+// Matches=Food (ice cream) and Matches=Farm (pig). Any focusTile without a
+// flat export here falls back to its REAL_IMG board art (badge and all).
+const FOCUS_ICON_OVERRIDES = { icecream: "moves_icon.svg", pig: "moves_icon_farm.svg" };
 function focusIconSrc(focusTile) {
   const file = FOCUS_ICON_OVERRIDES[focusTile] || REAL_IMG[focusTile];
   return file ? `${ASSET_BASE}${file}` : `${ASSET_BASE}moves_icon.svg`;

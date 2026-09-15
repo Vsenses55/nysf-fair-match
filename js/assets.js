@@ -224,14 +224,15 @@ const LEVELS = [
     levelInTheme: 1,
     tileTypes: ["cow", "pig", "chicken", "goat", "llama"],
     specialTile: "star",
-    focusTile: null,
-    focusWeight: 0,
-    focusMultiplier: 1,
+    focusTile: "pig",
+    focusWeight: 2,
+    focusMultiplier: 2,
     targetScore: 650,
     moves: 22,
     timeSeconds: 90,
     bgClass: "bg-farm",
     comboText: ["FARM-TASTIC!", "MOO-VELOUS!", "BARNYARD BLAST!", "HAY-MAZING!", "RIBBON WINNER!"],
+    focusComboText: ["OINK-STAR!", "HOG HEAVEN!", "PIG OUT!"],
   },
   {
     // Placeholder stats — Barnyard Bash was the only Farm level authored
