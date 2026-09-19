@@ -287,8 +287,11 @@ function updateHUD() {
   uiTargetCount.textContent = `${state.score.toLocaleString()} / ${level.targetScore.toLocaleString()}`;
 }
 
+// Rewards messaging is currently one stylized graphic (combo_snack_tacular.png)
+// shown for every reward, regardless of theme or the `text` picked by the
+// caller. Per-reward graphics will replace this when they're supplied.
 function showCombo(text) {
-  comboPopupEl.textContent = text;
+  comboPopupEl.querySelector("img").alt = text;
   comboPopupEl.classList.remove("show");
   void comboPopupEl.offsetWidth;
   comboPopupEl.classList.add("show");

@@ -556,17 +556,18 @@ html, body {
 /* ---------------- COMBO POPUP ---------------- */
 .combo-popup {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.6);
-  font-family: 'Luckiest Guy', cursive;
-  font-size: 46px;
-  color: var(--gold);
-  text-shadow: 3px 3px 0 #7a1f2b, 0 0 30px rgba(255,210,63,0.7);
   opacity: 0;
   pointer-events: none;
-  white-space: nowrap;
   z-index: 20;
+}
+
+.combo-popup img {
+  display: block;
+  width: 380px;
+  height: auto;
 }
 
 .combo-popup.show {
@@ -578,7 +579,7 @@ html, body {
   20% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(2deg); }
   35% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
   80% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -60%) scale(1.05); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
 }
 
 /* ---------------- END OVERLAY — Figma: Food Game Screen > Overlay >
