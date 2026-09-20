@@ -70,6 +70,9 @@ const objBonusMultiplier = document.getElementById("objectives-bonus-multiplier"
 // theme still renders instead of showing a broken image.
 const THEME_TITLE_IMG = { food: "obj_food_title.svg", farm: "obj_farm_title.svg", fun: "obj_fun_title.svg" };
 
+// Stylized rewards-messaging graphic shown in the combo popup, one per theme.
+const THEME_COMBO_IMG = { food: "combo_snack_tacular.png", farm: "combo_udderly_great.png", fun: "combo_roller_coastin.png" };
+
 const uiScore = document.getElementById("ui-score");
 const uiMoves = document.getElementById("ui-moves");
 const uiMovesIcon = document.getElementById("ui-moves-icon");
@@ -200,6 +203,7 @@ function startLevel(index) {
   uiTargetIcon.innerHTML = tileMarkup(level.specialTile);
   uiMovesIcon.src = focusIconSrc(level.focusTile);
   uiMovesBg.style.backgroundImage = `url(${focusIndicatorBg(level.focusTile)})`;
+  comboPopupEl.querySelector("img").src = `${ASSET_BASE}${THEME_COMBO_IMG[level.theme] || THEME_COMBO_IMG.food}`;
   gameFrameEl.classList.remove("theme-farm", "theme-fun");
   if (level.theme !== "food") gameFrameEl.classList.add(`theme-${level.theme}`);
 
@@ -287,8 +291,8 @@ function updateHUD() {
   uiTargetCount.textContent = `${state.score.toLocaleString()} / ${level.targetScore.toLocaleString()}`;
 }
 
-// Rewards messaging is currently one stylized graphic (combo_snack_tacular.png)
-// shown for every reward, regardless of theme or the `text` picked by the
+// Rewards messaging is currently one stylized graphic per theme (set in
+// startLevel), shown for every reward regardless of the `text` picked by the
 // caller. Per-reward graphics will replace this when they're supplied.
 function showCombo(text) {
   comboPopupEl.querySelector("img").alt = text;
