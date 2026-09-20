@@ -566,8 +566,12 @@ html, body {
 
 .combo-popup img {
   display: block;
-  width: 380px;
+  width: 480px;
   height: auto;
+  /* Two stacked drop-shadows: the tight one hugs the lettering, the wide one
+     gives the soft spread. CSS filter (not an SVG filter) so it stays crisp
+     under the app's transform: scale(). */
+  filter: drop-shadow(0 0 4px rgba(44, 12, 183, 0.4)) drop-shadow(0 0 22px rgba(44, 12, 183, 0.4));
 }
 
 .combo-popup.show {
