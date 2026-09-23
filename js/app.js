@@ -519,12 +519,19 @@ async function resolveCascade() {
 const btnContinue = document.getElementById("btn-continue");
 const btnRetry = document.getElementById("btn-retry");
 
+// Sound test: each theme card plays a sourced clip on click, and it's meant
+// to keep playing into the Objectives screen rather than cut off, so
+// nothing in the click handler below stops it on the showObjectives() call.
+const THEME_SELECT_SOUND = {
+  food: "assets/audio/food_select_test.wav",
+  farm: "assets/audio/farm_select_test.wav",
+  fun: "assets/audio/fun_select_test.wav",
+};
+
 document.querySelectorAll(".theme-card").forEach((card) => {
   card.addEventListener("click", () => {
-    // Sound test: Farm's card plays a sourced clip on click, and it's meant
-    // to keep playing into the Objectives screen rather than cut off, so
-    // nothing here stops it on the showObjectives() transition below.
-    if (card.dataset.theme === "farm") Sound.playClip("assets/audio/farm_select_test.wav");
+    const clip = THEME_SELECT_SOUND[card.dataset.theme];
+    if (clip) Sound.playClip(clip);
     const index = firstLevelOfTheme(card.dataset.theme);
     if (index !== -1) showObjectives(index);
   });
