@@ -521,6 +521,10 @@ const btnRetry = document.getElementById("btn-retry");
 
 document.querySelectorAll(".theme-card").forEach((card) => {
   card.addEventListener("click", () => {
+    // Sound test: Farm's card plays a sourced clip on click, and it's meant
+    // to keep playing into the Objectives screen rather than cut off, so
+    // nothing here stops it on the showObjectives() transition below.
+    if (card.dataset.theme === "farm") Sound.playClip("assets/audio/farm_select_test.wav");
     const index = firstLevelOfTheme(card.dataset.theme);
     if (index !== -1) showObjectives(index);
   });

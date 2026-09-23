@@ -87,5 +87,23 @@ const Sound = (() => {
     ambientStarted = false;
   }
 
-  return { resume, playHover, playSuccess, playFail, startAmbient, stopAmbient };
+  // Plain <audio> playback for sourced sound-file tests (everything else in
+  // this module is synthesized). Deliberately keeps playing across screen
+  // changes — those are just show/hide of divs, not page navigation — since
+  // the whole point of this test is a sound that carries into the next
+  // screen rather than cutting off.
+  const clips = {};
+  function playClip(src, { volume = 1 } = {}) {
+    let clip = clips[src];
+    if (!clip) {
+      clip = new Audio(src);
+      clips[src] = clip;
+    }
+    clip.volume = volume;
+    clip.currentTime = 0;
+    clip.play().catch(() => {});
+    return clip;
+  }
+
+  return { resume, playHover, playSuccess, playFail, startAmbient, stopAmbient, playClip };
 })();
