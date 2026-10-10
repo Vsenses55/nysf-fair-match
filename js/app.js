@@ -328,7 +328,6 @@ function renderBoard(opts) {
         tile.addEventListener("pointermove", onTilePointerMove);
         tile.addEventListener("pointerup", onTilePointerUp);
         tile.addEventListener("pointercancel", onTilePointerCancel);
-        tile.addEventListener("pointerenter", onTilePointerEnter);
         cell.appendChild(tile);
       }
       boardEl.appendChild(cell);
@@ -340,11 +339,6 @@ function renderBoard(opts) {
 
 const DRAG_THRESHOLD = 18; // px, in screen space — works regardless of canvas scale
 let dragState = null;
-
-function onTilePointerEnter(e) {
-  if (e.pointerType !== "mouse" || state.busy) return;
-  Sound.playHover();
-}
 
 function onTilePointerDown(e) {
   if (state.busy) return;
@@ -434,7 +428,7 @@ async function attemptSwap(r1, c1, r2, c2) {
 
   if (groups.length === 0) {
     engine.swap(r1, c1, r2, c2);
-    Sound.playFail();
+    Sound.playClip("assets/audio/wrong_move.wav");
     renderBoard({ invalid: new Set([`${r1},${c1}`, `${r2},${c2}`]) });
     await wait(320);
     renderBoard();
@@ -442,7 +436,7 @@ async function attemptSwap(r1, c1, r2, c2) {
     return;
   }
 
-  Sound.playSuccess();
+  Sound.playClip("assets/audio/match_success.wav");
   state.movesLeft--;
   renderBoard();
   await wait(120);
@@ -529,6 +523,11 @@ const THEME_SELECT_SOUND = {
 };
 
 document.querySelectorAll(".theme-card").forEach((card) => {
+  // Mouse only: touch fires an emulated pointerenter right before click, which
+  // would stack the hover clip on top of the click clip.
+  card.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") Sound.playClip("assets/audio/card_hover.wav");
+  });
   card.addEventListener("click", () => {
     const clip = THEME_SELECT_SOUND[card.dataset.theme];
     if (clip) Sound.playClip(clip);
@@ -539,4 +538,7 @@ document.querySelectorAll(".theme-card").forEach((card) => {
 btnRetry.addEventListener("click", () => startLevel(state.levelIndex));
 
 const btnStartPlaying = document.getElementById("btn-start-playing");
-btnStartPlaying.addEventListener("click", () => startLevel(state.pendingLevelIndex ?? 0));
+btnStartPlaying.addEventListener("click", () => {
+  Sound.playClip("assets/audio/start_playing.wav");
+  startLevel(state.pendingLevelIndex ?? 0);
+});
