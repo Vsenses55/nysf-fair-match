@@ -516,6 +516,7 @@ const btnRetry = document.getElementById("btn-retry");
 // Sound test: each theme card plays a sourced clip on click, and it's meant
 // to keep playing into the Objectives screen rather than cut off, so
 // nothing in the click handler below stops it on the showObjectives() call.
+const CARD_HOVER_VOLUME = 0.3; // 0 = silent, 1 = full clip volume
 const THEME_SELECT_SOUND = {
   food: "assets/audio/food_select_test.wav",
   farm: "assets/audio/farm_select_test.wav",
@@ -526,7 +527,7 @@ document.querySelectorAll(".theme-card").forEach((card) => {
   // Mouse only: touch fires an emulated pointerenter right before click, which
   // would stack the hover clip on top of the click clip.
   card.addEventListener("pointerenter", (e) => {
-    if (e.pointerType === "mouse") Sound.playClip("assets/audio/card_hover.wav");
+    if (e.pointerType === "mouse") Sound.playClip("assets/audio/card_hover.wav", { volume: CARD_HOVER_VOLUME });
   });
   card.addEventListener("click", () => {
     const clip = THEME_SELECT_SOUND[card.dataset.theme];
