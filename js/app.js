@@ -295,6 +295,7 @@ function updateHUD() {
 // startLevel), shown for every reward regardless of the `text` picked by the
 // caller. Per-reward graphics will replace this when they're supplied.
 function showCombo(text) {
+  Sound.playClip("assets/audio/combo_reward.wav");
   comboPopupEl.querySelector("img").alt = text;
   comboPopupEl.classList.remove("show");
   void comboPopupEl.offsetWidth;
