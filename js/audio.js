@@ -93,13 +93,16 @@ const Sound = (() => {
   // the whole point of this test is a sound that carries into the next
   // screen rather than cutting off.
   const clips = {};
+  // One dial for every sourced clip: 0 = silent, 1 = files at their own level.
+  // A clip's own `volume` option is applied on top of this.
+  const CLIP_MASTER_VOLUME = 0.6;
   function playClip(src, { volume = 1 } = {}) {
     let clip = clips[src];
     if (!clip) {
       clip = new Audio(src);
       clips[src] = clip;
     }
-    clip.volume = volume;
+    clip.volume = Math.min(1, volume * CLIP_MASTER_VOLUME);
     clip.currentTime = 0;
     clip.play().catch(() => {});
     return clip;
