@@ -281,20 +281,17 @@ html, body {
   font-size: 20px;
   color: #fff;
 }
-.btn-objectives {
-  left: 50%;
+/* Uses the same .btn-figma-lg pill as the title / How to Play screens,
+   scaled up 1.349x so the visible pill is the original 431.6x116. Selector
+   is scoped so it beats .btn-figma-lg (defined later in this file). */
+.objectives-frame .btn-objectives {
   top: 815px;
-  transform: translateX(-50%);
-  position: absolute;
-  width: 431.628px;
-  height: 116px;
-  font-size: 26px;
+  left: 50%;
+  transform: translateX(-50%) scale(1.349);
+  transform-origin: center top;
 }
-/* .btn:active sets transform:scale(0.96) for press feedback, which — since
-   CSS transform isn't additive across rules — would otherwise wipe out the
-   translateX(-50%) centering above and snap the button to the right. */
-.btn-objectives:active {
-  transform: translateX(-50%) scale(0.96);
+.objectives-frame .btn-objectives:active {
+  transform: translateX(-50%) scale(1.3);
 }
 
 /* ---------------- GAME SCREEN ----------------
