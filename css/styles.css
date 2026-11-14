@@ -65,7 +65,7 @@ html, body {
    styling of its own. Position/spacing is derived from those PNGs'
    native size measured against the reference fpo image — no built Figma
    frame exists for the assembled selection screen itself. */
-.selection-frame {
+.selection-frame, .title-frame {
   width: var(--design-w);
   height: var(--design-h);
   position: relative;
@@ -74,6 +74,39 @@ html, body {
   background-position: center;
   overflow: hidden;
 }
+/* ---------------- TITLE SCREEN ----------------
+   Positions measured off the reference comp (scaled to the 1366x1024 canvas).
+   Buttons reuse the .btn-figma-lg pills from the end card (same 320x86). */
+.title-fair-logo {
+  position: absolute;
+  left: 62px;
+  top: 62px;
+  width: 133px;
+  height: 131px;
+}
+.title-logo, .title-logo-fallback {
+  position: absolute;
+  left: 50%;
+  top: 150px;
+  transform: translateX(-50%);
+  width: 820px;
+}
+.title-logo { height: auto; }
+.title-logo-fallback {
+  /* shown only until logo_fair_match.png exists (the img covers it) */
+  font-family: 'Holtwood One SC', serif;
+  font-size: 150px;
+  line-height: 1;
+  text-align: center;
+  color: #2a3fd0;
+  text-shadow: 0 6px 0 #f0e3cf;
+  z-index: 0;
+}
+.title-logo { z-index: 1; }
+.title-frame .title-btn { top: 662px; z-index: 2; }
+.title-frame .title-btn-how { left: calc(50% - 177px); }
+.title-frame .title-btn-start { left: calc(50% + 177px); }
+
 .theme-card {
   position: absolute;
   left: 50%;
@@ -750,3 +783,107 @@ html, body {
    just a 16px gap between their abstract 86px boxes. */
 #btn-continue { top: 389.13px; }
 #btn-retry { top: 486.45px; }
+
+/* ---------------- HOW TO PLAY SCREEN ----------------
+   Auto-cycling 3-slide carousel (swap 3 / match 4 / match 5). Positions
+   measured off the comp on the 1366x1024 canvas. Each .howto-slide fills
+   the frame so its children use canvas coordinates directly. */
+.howto-frame {
+  width: var(--design-w);
+  height: var(--design-h);
+  position: relative;
+  overflow: hidden;
+  background: #4f05b4 url("../assets/img/bkg_howto.jpg") center / cover no-repeat;
+}
+.howto-title {
+  position: absolute;
+  left: 230px;
+  top: 125px;
+  width: 906px;
+  height: auto;
+}
+.howto-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+.howto-slide.active { opacity: 1; }
+.howto-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 330px;
+  margin: 0;
+  text-align: center;
+  font-family: 'Rowdies', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  color: #fff;
+}
+.howto-row {
+  position: absolute;
+  left: 50%;
+  top: 452px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  padding: 5px 8px;
+  background: #fff;
+  border: 3px solid #7fe8ee;
+  border-radius: 22px;
+  box-shadow: 0 0 0 3px rgba(127,232,238,0.35);
+}
+.howto-row img { width: 63px; height: 63px; display: block; object-fit: contain; }
+.howto-arrow { position: absolute; width: 56.43px; height: 14.56px; }
+.howto-arrow-top { left: 719px; top: 424px; }
+.howto-arrow-bottom { left: 720px; top: 541px; }
+.howto-result {
+  position: absolute;
+  left: 50%;
+  top: 575px;
+  transform: translateX(-50%);
+  display: block;
+  height: auto;
+}
+/* Card sizes are tuned so the visible pink/green card is ~104px wide. */
+.howto-result-icecream { width: 104px; }
+.howto-result-silver { width: 120px; top: 568px; }
+.howto-result-gold { width: 148px; top: 556px; }
+
+.howto-frame .howto-start {
+  top: 793px;
+  left: 50%;
+  transform: translateX(-50%) scale(1.31);
+  transform-origin: center top;
+}
+.howto-frame .howto-start:active { transform: translateX(-50%) scale(1.27); }
+
+.howto-dots {
+  position: absolute;
+  left: 50%;
+  top: 988px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+.howto-dot {
+  width: 21px;
+  height: 21px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.howto-dot::after {
+  content: "";
+  position: absolute;
+  left: 6px; top: 6px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #fff;
+}
+.howto-dot.active::after { background: #f26a1b; }

@@ -7,11 +7,81 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=Luckiest+Guy&family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=27" />
+<link rel="stylesheet" href="css/styles.css?v=35" />
 </head>
 <body>
 
 <div id="app">
+
+  <!-- TITLE SCREEN — first thing the player sees. Same archway background as
+       the Selection Screen. Needs assets/img/logo_fair_match.png (the big
+       FAIR MATCH logo); until that file exists a plain text placeholder
+       shows instead. HOW TO PLAY is not wired up yet — its screen is next. -->
+  <div id="screen-title" class="screen-outer">
+    <div class="screen">
+      <div class="title-frame">
+        <img class="title-fair-logo" src="assets/img/logo.svg" alt="THE FAIR" />
+        <div class="title-logo-fallback" style="display:none">FAIR<br>MATCH</div>
+        <img class="title-logo" src="assets/img/logo_fair_match.png" alt="Fair Match" onerror="this.remove();document.querySelector('.title-logo-fallback').style.display='block'" />
+
+        <button class="btn-figma-lg btn-figma-lg-blue title-btn title-btn-how" id="btn-how-to-play">
+          <svg class="btn-figma-lg-stroke" viewBox="0 0 320.003 87.8828" xmlns="http://www.w3.org/2000/svg">
+            <path d="M37.7715 3.88867C119.105 0.0355637 200.534 0.0356416 282.057 3.88867V3.88965C303.912 4.99584 320.292 23.1525 318.923 44.0088L318.921 44.0459C318.906 44.5592 318.849 45.0703 318.751 45.5742L318.744 45.6143L318.739 45.6533C317.676 55.0679 313.178 63.7608 306.107 70.0674C299.037 76.3737 289.889 79.852 280.415 79.8369H278.554C199.608 76.0758 120.568 76.0761 41.4346 79.8379H41.4336C31.65 80.3088 22.054 77.0378 14.5957 70.6885C7.13735 64.339 2.37575 55.3878 1.2793 45.6543L1.27637 45.6279L1.27246 45.6016L1.22461 45.2393C1.21155 45.1136 1.20049 44.9811 1.18848 44.8369C1.16719 44.5814 1.14091 44.2856 1.09375 43.9814C1.01889 43.1745 0.988924 42.364 1.00391 41.5537V41.5352C1.00391 21.6835 16.9373 4.89857 37.7725 3.88965L37.7715 3.88867Z" fill="none" stroke="#0118e7" stroke-width="2"/>
+          </svg>
+          <span>HOW TO PLAY</span>
+        </button>
+        <button class="btn-figma-lg btn-figma-lg-orange title-btn title-btn-start" id="btn-title-start">
+          <svg class="btn-figma-lg-stroke" viewBox="0 0 320.003 87.8828" xmlns="http://www.w3.org/2000/svg">
+            <path d="M37.7715 3.88867C119.105 0.0355637 200.534 0.0356416 282.057 3.88867V3.88965C303.912 4.99584 320.292 23.1525 318.923 44.0088L318.921 44.0459C318.906 44.5592 318.849 45.0703 318.751 45.5742L318.744 45.6143L318.739 45.6533C317.676 55.0679 313.178 63.7608 306.107 70.0674C299.037 76.3737 289.889 79.852 280.415 79.8369H278.554C199.608 76.0758 120.568 76.0761 41.4346 79.8379H41.4336C31.65 80.3088 22.054 77.0378 14.5957 70.6885C7.13735 64.339 2.37575 55.3878 1.2793 45.6543L1.27637 45.6279L1.27246 45.6016L1.22461 45.2393C1.21155 45.1136 1.20049 44.9811 1.18848 44.8369C1.16719 44.5814 1.14091 44.2856 1.09375 43.9814C1.01889 43.1745 0.988924 42.364 1.00391 41.5537V41.5352C1.00391 21.6835 16.9373 4.89857 37.7725 3.88965L37.7715 3.88867Z" fill="none" stroke="#f62837" stroke-width="2"/>
+          </svg>
+          <span>START PLAYING</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO PLAY SCREEN — auto-cycling carousel of 3 tips (see
+       startHowToCarousel() in app.js). Dots at the bottom are clickable. -->
+  <div id="screen-howto" class="screen-outer hidden">
+    <div class="screen">
+      <div class="howto-frame">
+        <img class="howto-title" src="assets/img/howto_title.svg" alt="HOW TO PLAY" />
+
+        <div class="howto-slide active">
+          <p class="howto-text">Swap any of the icons and<br>make a match of 3!</p>
+          <img class="howto-arrow howto-arrow-top" src="assets/img/howto_arrow_top.svg" alt="" />
+          <div class="howto-row"><img src="assets/img/icecream.svg" alt="" /><img src="assets/img/icecream.svg" alt="" /><img src="assets/img/hotdog.png" alt="" /><img src="assets/img/icecream.svg" alt="" /></div>
+          <img class="howto-arrow howto-arrow-bottom" src="assets/img/howto_arrow_bottom.svg" alt="" />
+          <img class="howto-result howto-result-icecream" src="assets/img/howto_icecream.png" alt="" />
+        </div>
+
+        <div class="howto-slide">
+          <p class="howto-text">Match 4 of the icons<br>to create a power-up!</p>
+          <div class="howto-row"><img src="assets/img/farm_pig.svg" alt="" /><img src="assets/img/farm_pig.svg" alt="" /><img src="assets/img/farm_pig.svg" alt="" /><img src="assets/img/farm_pig.svg" alt="" /></div>
+          <img class="howto-result howto-result-silver" src="assets/img/howto_star_silver.png" alt="" />
+        </div>
+
+        <div class="howto-slide">
+          <p class="howto-text">Match 5 items to create a<br>special power-up!</p>
+          <div class="howto-row"><img src="assets/img/fun_coaster.png" alt="" /><img src="assets/img/fun_coaster.png" alt="" /><img src="assets/img/fun_coaster.png" alt="" /><img src="assets/img/fun_coaster.png" alt="" /><img src="assets/img/fun_coaster.png" alt="" /></div>
+          <img class="howto-result howto-result-gold" src="assets/img/howto_star_gold.png" alt="" />
+        </div>
+
+        <button class="btn-figma-lg btn-figma-lg-orange howto-start" id="btn-howto-start">
+          <svg class="btn-figma-lg-stroke" viewBox="0 0 320.003 87.8828" xmlns="http://www.w3.org/2000/svg">
+            <path d="M37.7715 3.88867C119.105 0.0355637 200.534 0.0356416 282.057 3.88867V3.88965C303.912 4.99584 320.292 23.1525 318.923 44.0088L318.921 44.0459C318.906 44.5592 318.849 45.0703 318.751 45.5742L318.744 45.6143L318.739 45.6533C317.676 55.0679 313.178 63.7608 306.107 70.0674C299.037 76.3737 289.889 79.852 280.415 79.8369H278.554C199.608 76.0758 120.568 76.0761 41.4346 79.8379H41.4336C31.65 80.3088 22.054 77.0378 14.5957 70.6885C7.13735 64.339 2.37575 55.3878 1.2793 45.6543L1.27637 45.6279L1.27246 45.6016L1.22461 45.2393C1.21155 45.1136 1.20049 44.9811 1.18848 44.8369C1.16719 44.5814 1.14091 44.2856 1.09375 43.9814C1.01889 43.1745 0.988924 42.364 1.00391 41.5537V41.5352C1.00391 21.6835 16.9373 4.89857 37.7725 3.88965L37.7715 3.88867Z" fill="none" stroke="#f62837" stroke-width="2"/>
+          </svg>
+          <span>START PLAYING</span>
+        </button>
+
+        <div class="howto-dots">
+          <button class="howto-dot active" aria-label="Tip 1"></button>
+          <button class="howto-dot" aria-label="Tip 2"></button>
+          <button class="howto-dot" aria-label="Tip 3"></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- SELECTION SCREEN — Figma: Bkg Screens > Version=Selection (node
        2111:60135) for the archway background. The 3 theme cards are
@@ -19,7 +89,7 @@
        at 846x466 — see theme-food/farm/fun.png), not composited from
        separate pieces; position/spacing below is derived from those PNGs'
        native size against the reference fpo image, not a built Figma frame. -->
-  <div id="screen-start" class="screen-outer">
+  <div id="screen-start" class="screen-outer hidden">
     <div class="screen">
       <div class="selection-frame">
         <button class="theme-card" data-theme="food" style="background-image:url(assets/img/theme-food.png); top:90px;"></button>

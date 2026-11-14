@@ -46,6 +46,8 @@ setInterval(() => {
 }, 250);
 fitScreen();
 
+const screenTitle = document.getElementById("screen-title");
+const screenHowTo = document.getElementById("screen-howto");
 const screenStart = document.getElementById("screen-start");
 const screenObjectives = document.getElementById("screen-objectives");
 const screenGame = document.getElementById("screen-game");
@@ -538,6 +540,60 @@ document.querySelectorAll(".theme-card").forEach((card) => {
   });
 });
 btnRetry.addEventListener("click", () => startLevel(state.levelIndex));
+
+// Title screen: START PLAYING goes to theme selection; HOW TO PLAY shows the
+// tips screen, whose own START PLAYING button also goes to theme selection.
+document.getElementById("btn-how-to-play").addEventListener("click", () => {
+  Sound.playClip("assets/audio/start_playing.wav");
+  screenTitle.classList.add("hidden");
+  screenHowTo.classList.remove("hidden");
+  startHowToCarousel();
+});
+document.getElementById("btn-howto-start").addEventListener("click", () => {
+  Sound.playClip("assets/audio/start_playing.wav");
+  stopHowToCarousel();
+  screenHowTo.classList.add("hidden");
+  screenStart.classList.remove("hidden");
+});
+
+// How To Play carousel: 3 slides auto-advance every few seconds; the dots
+// jump to a slide (and restart the timer so it doesn't flip right after).
+const HOWTO_SLIDE_MS = 4500;
+const howToSlides = screenHowTo.querySelectorAll(".howto-slide");
+const howToDots = screenHowTo.querySelectorAll(".howto-dot");
+let howToIndex = 0;
+let howToTimer = null;
+
+function showHowToSlide(i) {
+  howToIndex = (i + howToSlides.length) % howToSlides.length;
+  howToSlides.forEach((el, n) => el.classList.toggle("active", n === howToIndex));
+  howToDots.forEach((el, n) => el.classList.toggle("active", n === howToIndex));
+}
+function stopHowToCarousel() {
+  clearInterval(howToTimer);
+  howToTimer = null;
+}
+function startHowToCarousel() {
+  stopHowToCarousel();
+  showHowToSlide(0);
+  howToTimer = setInterval(() => showHowToSlide(howToIndex + 1), HOWTO_SLIDE_MS);
+}
+howToDots.forEach((dot, n) => {
+  dot.addEventListener("click", () => {
+    showHowToSlide(n);
+    startHowToCarouselTimerOnly();
+  });
+});
+function startHowToCarouselTimerOnly() {
+  stopHowToCarousel();
+  howToTimer = setInterval(() => showHowToSlide(howToIndex + 1), HOWTO_SLIDE_MS);
+}
+
+document.getElementById("btn-title-start").addEventListener("click", () => {
+  Sound.playClip("assets/audio/start_playing.wav");
+  screenTitle.classList.add("hidden");
+  screenStart.classList.remove("hidden");
+});
 
 const btnStartPlaying = document.getElementById("btn-start-playing");
 btnStartPlaying.addEventListener("click", () => {
