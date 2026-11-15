@@ -104,8 +104,8 @@ html, body {
 }
 .title-logo { z-index: 1; }
 .title-frame .title-btn { top: 662px; z-index: 2; }
-.title-frame .title-btn-how { left: calc(50% - 177px); }
-.title-frame .title-btn-start { left: calc(50% + 177px); }
+.title-frame .title-btn-how { left: calc(50% - 168px); }
+.title-frame .title-btn-start { left: calc(50% + 168px); }
 
 .theme-card {
   position: absolute;
