@@ -549,6 +549,12 @@ document.getElementById("btn-how-to-play").addEventListener("click", () => {
   screenHowTo.classList.remove("hidden");
   startHowToCarousel();
 });
+// Close (X): back to the title screen.
+document.getElementById("btn-howto-close").addEventListener("click", () => {
+  stopHowToCarousel();
+  screenHowTo.classList.add("hidden");
+  screenTitle.classList.remove("hidden");
+});
 document.getElementById("btn-howto-start").addEventListener("click", () => {
   Sound.playClip("assets/audio/start_playing.wav");
   stopHowToCarousel();

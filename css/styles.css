@@ -845,10 +845,9 @@ html, body {
   display: block;
   height: auto;
 }
-/* Card sizes are tuned so the visible pink/green card is ~104px wide. */
-.howto-result-icecream { width: 104px; }
-.howto-result-silver { width: 120px; top: 568px; }
-.howto-result-gold { width: 148px; top: 556px; }
+/* All three result tiles are exported on the same 512x512 canvas with the
+   card in the same spot, so one width/top works for every slide. */
+.howto-result { width: 114px; top: 570px; }
 
 .howto-frame .howto-start {
   top: 793px;
@@ -884,3 +883,20 @@ html, body {
   background: #fff;
 }
 .howto-dot.active::after { background: #f26a1b; }
+
+.howto-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 68px;
+  height: 68px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+  z-index: 5;
+}
+.howto-close img { width: 100%; height: 100%; display: block; pointer-events: none; }
+.howto-close:hover { transform: scale(1.08); }
+.howto-close:active { transform: scale(0.94); }
