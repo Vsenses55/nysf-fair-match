@@ -59,8 +59,8 @@ const gameFrameEl = document.querySelector(".game-frame");
 const objTitleImg = document.getElementById("objectives-title-img");
 const objBlurb = document.getElementById("objectives-blurb");
 const objTarget = document.getElementById("objectives-target");
-const objBonusLabel = document.getElementById("objectives-bonus-label");
-const objBonusPanel = document.getElementById("objectives-bonus-panel");
+const objBonusGroup = document.getElementById("objectives-bonus-group");
+const objLoaderFill = document.getElementById("objectives-loader-fill");
 const objBonusBg = document.getElementById("objectives-bonus-bg");
 const objBonusIcon = document.getElementById("objectives-bonus-icon");
 const objBonusMultiplier = document.getElementById("objectives-bonus-multiplier");
@@ -155,8 +155,13 @@ function nextLevelAfter(level) {
 
 /* ---------------- LEVEL LIFECYCLE ---------------- */
 
+// How long the Objectives screen stays up (and the loader bar takes to fill)
+// before the level auto-starts. Raise it if players need longer to read.
+const OBJECTIVES_READ_MS = 7000;
+let objectivesTimer = null;
+
 // Shows the pre-level objectives screen for `index` without starting it —
-// "START PLAYING" there calls startLevel(state.pendingLevelIndex). Kept
+// its loader bar auto-calls startLevel(index) when it finishes. Kept
 // separate from startLevel() because the objectives screen is just a
 // themed preview; nothing about the engine/board/timer should exist yet.
 function showObjectives(index) {
@@ -171,8 +176,7 @@ function showObjectives(index) {
   objBlurb.textContent = `Score ${level.targetScore.toLocaleString()} points before the timer runs out! Match 3 or more in a row — the bigger the combo, the bigger the bonus. You've got ${level.moves} moves and ${level.timeSeconds} seconds to hit the goal.`;
 
   const hasFocus = !!level.focusTile;
-  objBonusLabel.classList.toggle("hidden", !hasFocus);
-  objBonusPanel.classList.toggle("hidden", !hasFocus);
+  objBonusGroup.classList.toggle("hidden", !hasFocus);
   if (hasFocus) {
     objBonusIcon.src = focusIconSrc(level.focusTile);
     objBonusBg.style.backgroundImage = `url(${focusIndicatorBg(level.focusTile)})`;
@@ -182,6 +186,20 @@ function showObjectives(index) {
   screenStart.classList.add("hidden");
   screenGame.classList.add("hidden");
   screenObjectives.classList.remove("hidden");
+
+  // No Start button: the loader bar fills over OBJECTIVES_READ_MS (time to
+  // read the screen), then the level begins by itself.
+  clearTimeout(objectivesTimer);
+  objLoaderFill.style.transition = "none";
+  objLoaderFill.style.width = "0";
+  void objLoaderFill.offsetWidth; // flush so the next width change animates
+  objLoaderFill.style.transition = `width ${OBJECTIVES_READ_MS}ms linear`;
+  objLoaderFill.style.width = "100%";
+  objectivesTimer = setTimeout(() => {
+    if (screenObjectives.classList.contains("hidden") || state.pendingLevelIndex !== index) return;
+    Sound.playClip("assets/audio/start_playing.wav");
+    startLevel(index);
+  }, OBJECTIVES_READ_MS);
 }
 
 function startLevel(index) {
@@ -601,8 +619,3 @@ document.getElementById("btn-title-start").addEventListener("click", () => {
   screenStart.classList.remove("hidden");
 });
 
-const btnStartPlaying = document.getElementById("btn-start-playing");
-btnStartPlaying.addEventListener("click", () => {
-  Sound.playClip("assets/audio/start_playing.wav");
-  startLevel(state.pendingLevelIndex ?? 0);
-});

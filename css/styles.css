@@ -201,11 +201,18 @@ html, body {
 /* Each theme's "Theme Objectives" header graphic has its own native size
    (Figma component variants aren't all the same dimensions), so the size
    is set per theme class rather than fixed on the shared img element. */
-.objectives-title-img {
+.objectives-content {
   position: absolute;
-  left: 50%;
-  top: 103px;
-  transform: translateX(-50%);
+  left: 0; right: 0; top: 0;
+  bottom: 14px; /* leave room for the loader bar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.objectives-title-img {
+  display: block;
+  flex-shrink: 0;
 }
 .objectives-title-img.theme-food {
   width: 615.16px;
@@ -220,22 +227,14 @@ html, body {
   height: 196.69px;
 }
 .objectives-level {
-  position: absolute;
-  left: 50%;
-  top: 305px;
-  transform: translateX(-50%);
-  margin: 0;
+  margin: 7px 0 0;
   font-family: 'Holtwood One SC', serif;
   font-size: 42px;
   color: #ffff7e;
   white-space: nowrap;
 }
 .objectives-blurb {
-  position: absolute;
-  left: 50%;
-  top: 377px;
-  transform: translateX(-50%);
-  margin: 0;
+  margin: 22px 0 0;
   width: 840px;
   font-family: 'Rowdies', sans-serif;
   font-size: 22px;
@@ -243,27 +242,27 @@ html, body {
   color: #fff;
   text-align: center;
 }
+.objectives-group {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .objectives-row-label {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
+  margin: 0 0 6px;
   font-family: 'Rowdies', sans-serif;
   font-size: 26px;
   color: #fff;
   white-space: nowrap;
 }
-.obj-moves-panel {
-  left: 50%;
-  top: 527px;
-  transform: translateX(-50%);
+/* scoped: .figma-panel (later in file) sets position:absolute */
+.objectives-group .obj-moves-panel {
+  position: relative;
   width: 169.38px;
   height: 78.91px;
 }
-.obj-target-panel {
-  left: 50%;
-  top: 682px;
-  transform: translateX(-50%);
+.objectives-group .obj-target-panel {
+  position: relative;
   width: 197.41px;
   height: 65.86px;
 }
@@ -281,17 +280,18 @@ html, body {
   font-size: 20px;
   color: #fff;
 }
-/* Uses the same .btn-figma-lg pill as the title / How to Play screens,
-   scaled up 1.349x so the visible pill is the original 431.6x116. Selector
-   is scoped so it beats .btn-figma-lg (defined later in this file). */
-.objectives-frame .btn-objectives {
-  top: 815px;
-  left: 50%;
-  transform: translateX(-50%) scale(1.349);
-  transform-origin: center top;
+/* Loader: runs along the bottom edge while the player reads. The fill's
+   width transition is driven from showObjectives() in app.js. */
+.objectives-loader {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 14px;
+  background: #3d3a4d;
 }
-.objectives-frame .btn-objectives:active {
-  transform: translateX(-50%) scale(1.3);
+.objectives-loader-fill {
+  width: 0;
+  height: 100%;
+  background: #f97738;
 }
 
 /* ---------------- GAME SCREEN ----------------
